@@ -233,7 +233,7 @@ variable with predicate PRED."
 (defcustom js2-basic-offset (if (and (boundp 'c-basic-offset)
                                      (numberp c-basic-offset))
                                 c-basic-offset
-                              4)
+                              2)
   "Number of spaces to indent nested statements.
 Similar to `c-basic-offset'."
   :group 'js2-mode

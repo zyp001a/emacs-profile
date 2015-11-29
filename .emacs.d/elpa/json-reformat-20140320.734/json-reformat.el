@@ -41,7 +41,7 @@
 (eval-when-compile (require 'cl))
 
 (defun json-reformat:indent (level)
-  (make-string (* level 4) ? ))
+  (make-string (* level 1) ?\t ))
 
 (defun json-reformat:number-to-string (val)
   (number-to-string val))
