@@ -48,6 +48,7 @@
 
 (add-to-list 'auto-mode-alist '("\\.json$" . json-mode))
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.disp$" . js2-mode))
 
 ;; coffeescript
 (custom-set-variables
