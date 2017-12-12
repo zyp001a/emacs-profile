@@ -1,96 +1,99 @@
-;; .emacs
-;;; uncomment this line to disable loading of "default.el" at startup
-;; (setq inhibit-default-init t)
-(require 'package)
-;; Add the original Emacs Lisp Package Archive
-(add-to-list 'package-archives
-             '("elpa" . "http://tromey.com/elpa/"))
-;; Add the user-contributed repository
-(add-to-list 'package-archives
-             '("marmalade" . "http://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/") t)
-(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
-;(load flex-mode)
-(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
-                    (not (gnutls-available-p))))
-       (url (concat (if no-ssl "http" "https") "://melpa.org/packages/")))
-  (add-to-list 'package-archives (cons "melpa" url) t))
+;;js2-mode
+;;auto-complete
+;;pyim
+;;coffee-mode
 
-(add-to-list 'package-archives
-             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+;;init 
+(setq jpk-packages
+      '(
+        ac-dabbrev
+        ...
+        yasnippet
+        ))
+
 (package-initialize)
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'package-archives
+             '("org" . "http://orgmode.org/elpa/"))
+
+;; install any packages in jpk-packages, if they are not installed already
+(let ((refreshed nil))
+  (when (not package-archive-contents)
+    (package-refresh-contents)
+    (setq refreshed t))
+  (dolist (pkg jpk-packages)
+    (when (and (not (package-installed-p pkg))
+             (assoc pkg package-archive-contents))
+      (unless refreshed
+        (package-refresh-contents)
+        (setq refreshed t))
+      (package-install pkg))))
+
+(defun package-list-unaccounted-packages ()
+  "Like `package-list-packages', but shows only the packages that
+  are installed and are not in `jpk-packages'.  Useful for
+  cleaning out unwanted packages."
+  (interactive)
+  (package-show-package-list
+   (remove-if-not (lambda (x) (and (not (memq x jpk-packages))
+                            (not (package-built-in-p x))
+                            (package-installed-p x)))
+                  (mapcar 'car package-archive-contents))))
 
 
+;; pyim
 (require 'pyim)
 (require 'pyim-basedict) ; 拼音词库设置，五笔用户 *不需要* 此行设置
 (pyim-basedict-enable)   ; 拼音词库，五笔用户 *不需要* 此行设置
 (setq default-input-method "pyim")
 
-;; turn on font-lock mode
-(when (fboundp 'global-font-lock-mode)
-  (global-font-lock-mode 0))
 
-;; enable visual feedback on selections
-;(setq transient-mark-mode t)
-
-;; default to better frame titles
-(setq frame-title-format
-      (concat  "%b - emacs@" (system-name)))
-
-;; default to unified diffs
-(setq diff-switches "-u")
-
-;; always end a file with a newline
-;(setq require-final-newline 'query)
-
-
-; show colors
-(global-font-lock-mode t)
-; set indent
-(setq c-default-style "k&r"
-			c-basic-offset 2)
-
-
-
-(setq-default tab-width 2)
-(setq tab-always-indent nil)
-(put 'upcase-region 'disabled nil)
-
-(add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
-(add-to-list 'auto-mode-alist '("\\.z$" . js2-mode))
-(add-to-list 'auto-mode-alist '("\\.json$" . js2-mode))
-(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
-(add-to-list 'auto-mode-alist '("\\.json\\.tt$" . js2-mode))
-(add-to-list 'auto-mode-alist '("\\.js\\.tt$" . js2-mode))
-(add-to-list 'auto-mode-alist '("\\.html\\.tt$" . html-mode))
-
-;; coffeescript
-(custom-set-variables
- '(coffee-tab-width 2)
- '(coffee-args-compile '("-c" "--bare")))
-
-(eval-after-load "coffee-mode"
-  '(progn
-     (define-key coffee-mode-map [(meta r)] 'coffee-compile-buffer)
-     (define-key coffee-mode-map (kbd "C-j") 'coffee-newline-and-indent)))
-
-;;(add-hook 'js-mode-hook 'js2-minor-mode)
-
-(add-to-list 'interpreter-mode-alist '("node" . js2-mode))
+;; auto complete
 (require 'auto-complete)
 (global-auto-complete-mode t)
 (global-set-key (kbd "C-x ?") 'auto-complete)
 (setq ac-candidate-limit nil)
 (setq ac-use-menu-map t)
 
-;; Default settings
+
+;; select by mode
+(add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
+(add-to-list 'auto-mode-alist '("\\.z$" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.json$" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+(add-to-list 'interpreter-mode-alist '("node" . js2-mode))
+
+
+;; keyboard binding
 (define-key ac-menu-map "\C-n" 'ac-next)
 (define-key ac-menu-map "\C-p" 'ac-previous)
+(global-set-key (kbd "C-c C-c") 'comment-region)
 
-;(require 'dired-details)
-;(setq-default dired-details-hidden-string "")
-;(dired-details-install)
-;(dired-at-point)
-;(split-window-right -25)
+;; general
+(setq-default tab-width 2)
+(setq tab-always-indent nil)
+
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(coffee-args-compile (quote ("-c" "--bare")))
+ '(coffee-tab-width 2)
+ '(js-indent-level 2)
+ '(package-selected-packages
+	 (quote
+		(auto-complete pyim js2-mode yasnippet php-mode json-mode json dired-details coffee-mode))))
+
+(eval-after-load "coffee-mode"
+  '(progn
+     (define-key coffee-mode-map [(meta r)] 'coffee-compile-buffer)
+     (define-key coffee-mode-map (kbd "C-j") 'coffee-newline-and-indent)))
 
