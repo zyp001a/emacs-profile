@@ -2,7 +2,6 @@
 ;;auto-complete
 ;;pyim
 ;;coffee-mode
-
 ;;init 
 (setq jpk-packages
       '(
@@ -90,7 +89,7 @@
  '(js-indent-level 2)
  '(package-selected-packages
 	 (quote
-		(auto-complete pyim js2-mode yasnippet php-mode json-mode json dired-details coffee-mode))))
+		(popup auto-complete pyim js2-mode yasnippet php-mode json-mode json dired-details coffee-mode))))
 
 (eval-after-load "coffee-mode"
   '(progn
