@@ -2,3 +2,4 @@
 **~
 .emacs.d/eshell/history
 .emacs.d/ac-comphist.dat
+.emacs.d/elpa/archives/*

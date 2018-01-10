@@ -58,16 +58,18 @@
 
 ;; select by mode
 (add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
-(add-to-list 'auto-mode-alist '("\\.z$" . js2-mode))
 (add-to-list 'auto-mode-alist '("\\.json$" . js2-mode))
-(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.js$" . rjsx-mode))
+(add-to-list 'auto-mode-alist '("\\.babel$" . rjsx-mode))
+(add-to-list 'auto-mode-alist '("\\.jsx$" . rjsx-mode))
 (add-to-list 'interpreter-mode-alist '("node" . js2-mode))
 
 
 ;; keyboard binding
 (define-key ac-menu-map "\C-n" 'ac-next)
 (define-key ac-menu-map "\C-p" 'ac-previous)
-(global-set-key (kbd "C-c C-c") 'comment-region)
+(global-set-key (kbd "C-c M-c") 'comment-region)
+(global-set-key (kbd "C-c M-v") 'uncomment-region)
 
 ;; general
 (setq-default tab-width 2)
@@ -89,7 +91,7 @@
  '(js-indent-level 2)
  '(package-selected-packages
 	 (quote
-		(popup auto-complete pyim js2-mode yasnippet php-mode json-mode json dired-details coffee-mode))))
+		(rjsx-mode popup auto-complete pyim js2-mode yasnippet php-mode json-mode json dired-details coffee-mode))))
 
 (eval-after-load "coffee-mode"
   '(progn
