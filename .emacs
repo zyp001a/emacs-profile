@@ -98,3 +98,49 @@
      (define-key coffee-mode-map [(meta r)] 'coffee-compile-buffer)
      (define-key coffee-mode-map (kbd "C-j") 'coffee-newline-and-indent)))
 
+
+(defvar sl-highlights nil "highlight for Soul language")
+(setq sl-highlights
+      '(
+				("\\\\." . font-lock-constant-face)		
+				("\\([A-Za-z0-9_$]+\\) *= *\\&" . (1 font-lock-function-name-face))
+				("\\&(\\([^)]+\\))" . (1 font-lock-variable-name-face))
+				("\\#?\\#[A-Za-z0-9_$]+" . font-lock-variable-name-face)
+        ("\\@foreach \\([a-zA-Z0-9_$]+\\)" . (1 font-lock-variable-name-face))
+        ("\\@each \\([a-zA-Z0-9_$]+ [a-zA-Z0-9_$]+\\)" . (1 font-lock-variable-name-face))
+        ("\\@[a-z]+" . font-lock-keyword-face)))
+(define-derived-mode sl-mode c-mode "Soul"
+  "major mode for editing Soul language code."
+  (setq font-lock-defaults '(sl-highlights)))
+(add-to-list 'auto-mode-alist '("\\.sl$" . sl-mode))
+
+(defvar slt-highlights nil "highlight for Soul template language")
+(setq slt-highlights
+      '(
+				;;				("~=\\(\\\\.\\|[^\\\\~]\\)+~" . font-lock-function-name-face)
+				("~=[^~]+~" . font-lock-function-name-face)				
+				("~[^~]+~" . font-lock-variable-name-face)
+        ))
+(defun test-font-lock-extend-region ()
+  "Extend the search region to include an entire block of text."
+  ;; Avoid compiler warnings about these global variables from font-lock.el.
+  ;; See the documentation for variable `font-lock-extend-region-functions'.
+  (eval-when-compile (defvar font-lock-beg) (defvar font-lock-end))
+  (save-excursion
+    (goto-char font-lock-beg)
+    (let ((found (or (re-search-backward "\n\n" nil t) (point-min))))
+      (goto-char font-lock-end)
+      (when (re-search-forward "\n\n" nil t)
+        (beginning-of-line)
+        (setq font-lock-end (point)))
+      (setq font-lock-beg found))))
+(define-derived-mode slt-mode text-mode "Soul template"
+  "major mode for editing Soul template language code."
+  (setq font-lock-defaults '(slt-highlights))
+  (set (make-local-variable 'font-lock-multiline) t)
+	(add-hook 'font-lock-extend-region-functions
+            'test-font-lock-extend-region)
+	)
+(add-to-list 'auto-mode-alist '("\\.slt$" . slt-mode))
+
+
