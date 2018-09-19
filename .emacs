@@ -120,6 +120,7 @@
 				;;				("~=\\(\\\\.\\|[^\\\\~]\\)+~" . font-lock-function-name-face)
 				("~=[^~]+~" . font-lock-function-name-face)				
 				("~[^~]+~" . font-lock-variable-name-face)
+				("&\\([0-9A-Za-z_$\\.\\-\\>[]\\|]\\)+" . font-lock-constant-face)				
         ))
 (defun test-font-lock-extend-region ()
   "Extend the search region to include an entire block of text."
