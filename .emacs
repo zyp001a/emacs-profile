@@ -146,4 +146,10 @@
 	)
 (add-to-list 'auto-mode-alist '("\\.slt$" . slt-mode))
 
+(defun my-after-save-actions ()
+  "Used in `after-save-hook'."
+  (when (memq this-command '(save-buffer save-some-buffers))
+    (font-lock-fontify-buffer nil)
+    ))
 
+(add-hook 'after-save-hook 'my-after-save-actions)
