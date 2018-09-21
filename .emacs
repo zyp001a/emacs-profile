@@ -102,6 +102,8 @@
 (defvar sl-highlights nil "highlight for Soul language")
 (setq sl-highlights
       '(
+        ("\\/\\/.*" . font-lock-comment-face)
+        ("\\/\\*[^\\*]*\\*\\/" . font-lock-comment-face)				
 				("\\\\." . font-lock-constant-face)		
 				("\\([A-Za-z0-9_$]+\\) *= *\\&" . (1 font-lock-function-name-face))
 				("\\&(\\([^)]+\\))" . (1 font-lock-variable-name-face))
@@ -118,9 +120,9 @@
 (setq slt-highlights
       '(
 				;;				("~=\\(\\\\.\\|[^\\\\~]\\)+~" . font-lock-function-name-face)
-				("~=[^~]+~" . font-lock-function-name-face)				
-				("~[^~]+~" . font-lock-variable-name-face)
-				("&\\([0-9A-Za-z_$\\.\\-\\>[]\\|]\\)+" . font-lock-constant-face)
+				("~=[^~]+~" . font-lock-string-face)				
+				("~[^~]+~" . font-lock-comment-face)
+				("&[0-9A-Za-z_$]+" . font-lock-constant-face)
          ))
 (defun test-font-lock-extend-region ()
   "Extend the search region to include an entire block of text."
