@@ -113,7 +113,9 @@
         ("\\@[a-z]+" . font-lock-keyword-face)))
 (define-derived-mode sl-mode fundamental-mode "Soul"
   "major mode for editing Soul language code."
-  (setq font-lock-defaults '(sl-highlights)))
+  (setq font-lock-defaults '(sl-highlights))
+  (setq indent-tabs-mode nil)
+	)
 (add-to-list 'auto-mode-alist '("\\.sl$" . sl-mode))
 
 (defvar slt-highlights nil "highlight for Soul template language")
