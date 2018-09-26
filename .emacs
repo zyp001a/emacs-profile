@@ -142,6 +142,7 @@
 (define-derived-mode slt-mode fundamental-mode "Soul template"
   "major mode for editing Soul template language code."
   (setq font-lock-defaults '(slt-highlights t))
+  (setq indent-tabs-mode nil)		
   (set (make-local-variable 'font-lock-multiline) t)
 	(add-hook 'font-lock-extend-region-functions
             'test-font-lock-extend-region)
