@@ -11,11 +11,12 @@
         ))
 
 (package-initialize)
+;;(add-to-list 'package-archives
+ ;;            '("melpa" . "http://melpa.org/packages/"))
+;;(add-to-list 'package-archives
+ ;;            '("org" . "http://orgmode.org/elpa/"))
 (add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/"))
-(add-to-list 'package-archives
-             '("org" . "http://orgmode.org/elpa/"))
-
+	     '("popkit" . "http://elpa.popkit.org/packages/"))
 ;; install any packages in jpk-packages, if they are not installed already
 (let ((refreshed nil))
   (when (not package-archive-contents)
@@ -40,6 +41,10 @@
                             (package-installed-p x)))
                   (mapcar 'car package-archive-contents))))
 
+(add-to-list 'load-path "~/.emacs.d/custom/go-mode.el")
+(autoload 'go-mode "go-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
+
 
 ;; pyim
 (require 'pyim)
@@ -54,6 +59,7 @@
 (global-set-key (kbd "C-x ?") 'auto-complete)
 (setq ac-candidate-limit nil)
 (setq ac-use-menu-map t)
+
 
 
 ;; select by mode
