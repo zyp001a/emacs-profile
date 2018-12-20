@@ -105,9 +105,10 @@
         ("\\/\\/.*" . font-lock-comment-face)
         ("\\/\\*[^\\*]*\\*\\/" . font-lock-comment-face)				
 				("\\\\." . font-lock-constant-face)		
-				("\\([A-Za-z0-9_$]+\\) *= *\\&" . (1 font-lock-function-name-face))
-				("\\&(\\([^)]+\\))" . (1 font-lock-variable-name-face))
-				("\\#?\\#[A-Za-z0-9_$]+" . font-lock-variable-name-face)
+				("\\([A-Za-z0-9_$]+\\) *-> *" . (1 font-lock-function-name-face))
+				("\\->.*(\\([^(]+\\))" . (1 font-lock-variable-name-face))
+				("[A-Za-z0-9_$]+\\#\\#[A-Za-z0-9_$]+" . font-lock-constant-face)
+				("\\#[A-Za-z0-9_$]+" . font-lock-variable-name-face)
         ("\\@foreach \\([a-zA-Z0-9_$]+\\)" . (1 font-lock-variable-name-face))
         ("\\@each \\([a-zA-Z0-9_$]+ [a-zA-Z0-9_$]+\\)" . (1 font-lock-variable-name-face))
         ("\\@[a-z]+" . font-lock-keyword-face)))
@@ -122,9 +123,10 @@
 (setq slt-highlights
       '(
 				;;				("~=\\(\\\\.\\|[^\\\\~]\\)+~" . font-lock-function-name-face)
-				("~=[^~]+~" . font-lock-string-face)				
+				("~=[^~]+~" . font-lock-string-face)
+				("~:[^~]+~" . font-lock-string-face)				
 				("~[^~]+~" . font-lock-comment-face)
-				("&[0-9A-Za-z_$]+" . font-lock-constant-face)
+				("\\^[0-9A-Za-z_$]+" . font-lock-constant-face)
          ))
 (defun test-font-lock-extend-region ()
   "Extend the search region to include an entire block of text."
