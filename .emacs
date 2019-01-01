@@ -70,16 +70,28 @@
 (add-to-list 'auto-mode-alist '("\\.jsx$" . rjsx-mode))
 (add-to-list 'interpreter-mode-alist '("node" . js2-mode))
 
+(defun replace-regexp-entire-buffer (pattern replacement)
+  "Perform regular-expression replacement throughout buffer."
+  (interactive
+   (let ((args (query-replace-read-args "Replace" t)))
+     (setcdr (cdr args) nil)    ; remove third value returned from query---args
+     args))
+  (save-excursion
+    (goto-char (point-min))
+    (while (re-search-forward pattern nil t)
+      (replace-match replacement))))
 
 ;; keyboard binding
 (define-key ac-menu-map "\C-n" 'ac-next)
 (define-key ac-menu-map "\C-p" 'ac-previous)
+(global-set-key (kbd "C-x r") 'replace-regexp-entire-buffer)
 (global-set-key (kbd "C-c M-c") 'comment-region)
 (global-set-key (kbd "C-c M-v") 'uncomment-region)
 
 ;; general
 (setq-default tab-width 2)
 (setq tab-always-indent nil)
+
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -108,18 +120,19 @@
 (defvar sl-highlights nil "highlight for Soul language")
 (setq sl-highlights
       '(
-        ("\\/\\/.*" . font-lock-comment-face)
-        ("\\/\\*[^\\*]*\\*\\/" . font-lock-comment-face)				
 				("\\\\." . font-lock-constant-face)		
 				("\\([A-Za-z0-9_$]+\\) *[-=]> *" . (1 font-lock-function-name-face))
 				("\\([A-Za-z0-9_$]+\\) *:= *" . (1 font-lock-function-name-face))
-				("\\->.*(\\([^(]+\\))" . (1 font-lock-variable-name-face))
+				("\\->.*(\\([^)]+\\))" . (1 font-lock-variable-name-face))
 				("[^&]\\& *\\([A-Za-z0-9_$ ]+\\)" . (1 font-lock-function-name-face))
 				("[A-Za-z0-9_$]+\\#\\#[A-Za-z0-9_$]+" . font-lock-constant-face)
 				("\\#[A-Za-z0-9_$]+" . font-lock-variable-name-face)
         ("\\@foreach \\([a-zA-Z0-9_$]+\\)" . (1 font-lock-variable-name-face))
         ("\\@each \\([a-zA-Z0-9_$]+ [a-zA-Z0-9_$]+\\)" . (1 font-lock-variable-name-face))
-        ("\\@[a-z]+" . font-lock-keyword-face)))
+        ("\\@[a-z]+" . font-lock-keyword-face)
+        ("\\/\\/.*" . font-lock-comment-face)
+        ("\\/\\*[^\\*]*\\*\\/" . font-lock-comment-face))
+			)
 (define-derived-mode sl-mode fundamental-mode "Soul"
   "major mode for editing Soul language code."
   (setq font-lock-defaults '(sl-highlights))
@@ -166,3 +179,4 @@
     ))
 
 (add-hook 'after-save-hook 'my-after-save-actions)
+
