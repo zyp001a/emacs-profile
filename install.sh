@@ -1,4 +1,4 @@
 rm -rf ../.emacs.d
 cp -r .emacs.d ../.
-ln -s .emacs ../.
+cd .. && ln -s emacs-profile/.emacs . && cd emasc-profile
 echo "alias e='emacs -nw'" >>../.bashrc
