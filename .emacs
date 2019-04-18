@@ -120,6 +120,8 @@
 (defvar sl-highlights nil "highlight for Soul language")
 (setq sl-highlights
       '(
+        ("\\/\\/.*" . font-lock-comment-face)
+        ("\\/\\*[^\\*]*\\*\\/" . font-lock-comment-face)				
 				("\\\\." . font-lock-constant-face)		
 				("\\([A-Za-z0-9_$]+\\) *[-=]> *" . (1 font-lock-function-name-face))
 				("\\([A-Za-z0-9_$]+\\) *:= *" . (1 font-lock-function-name-face))
@@ -130,8 +132,7 @@
         ("\\@foreach \\([a-zA-Z0-9_$]+\\)" . (1 font-lock-variable-name-face))
         ("\\@each \\([a-zA-Z0-9_$]+ [a-zA-Z0-9_$]+\\)" . (1 font-lock-variable-name-face))
         ("\\@[a-z]+" . font-lock-keyword-face)
-        ("\\/\\/.*" . font-lock-comment-face)
-        ("\\/\\*[^\\*]*\\*\\/" . font-lock-comment-face))
+				)
 			)
 (define-derived-mode sl-mode fundamental-mode "Soul"
   "major mode for editing Soul language code."
@@ -180,3 +181,6 @@
 
 (add-hook 'after-save-hook 'my-after-save-actions)
 
+(add-to-list 'load-path "~/.emacs.d/rust-mode")
+(autoload 'rust-mode "rust-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
