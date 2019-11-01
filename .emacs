@@ -120,24 +120,59 @@
 (defvar sl-highlights nil "highlight for Soul language")
 (setq sl-highlights
       '(
-				("\\\\." . font-lock-constant-face)		
-				("\\([A-Za-z0-9_$]+\\) *[-=]> *" . (1 font-lock-function-name-face))
-				("\\([A-Za-z0-9_$]+\\) *:= *" . (1 font-lock-function-name-face))
-				("\\->.*(\\([^)]+\\))" . (1 font-lock-variable-name-face))
-				("[^&]\\& *\\([A-Za-z0-9_$ ]+\\)" . (1 font-lock-function-name-face))
-				("[A-Za-z0-9_$]+\\#\\#[A-Za-z0-9_$]+" . font-lock-constant-face)
-				("\\#[A-Za-z0-9_$]+" . font-lock-variable-name-face)
-        ("\\@foreach \\([a-zA-Z0-9_$]+\\)" . (1 font-lock-variable-name-face))
-        ("\\@each \\([a-zA-Z0-9_$]+ [a-zA-Z0-9_$]+\\)" . (1 font-lock-variable-name-face))
-        ("\\@[a-z]+" . font-lock-keyword-face)
-        ("\\/\\/.*" . font-lock-comment-face)
-        ("\\/\\*[^\\*]*\\*\\/" . font-lock-comment-face))
+				("`\\(\\\\.\\|[^\\\\`]\\)*`" . font-lock-warning-face)
+				("'\\(\\\\.\\|[^\\\\']\\)*'" . font-lock-string-face)
+				("\"\\(\\\\.\\|[^\\\\\"]\\)*\"" . font-lock-string-face)
+;;				("\\([A-Za-z0-9_$]+\\) *[-=]> *" . (1 font-lock-function-name-face))
+;;				("\\([A-Za-z0-9_$]+\\) *:= *" . (1 font-lock-function-name-face))
+;;				("[^&]\\& *\\([A-Za-z0-9_$ ]+\\)" . (1 font-lock-function-name-face))
+        ("\\@\\([A-Za-z_][A-Za-z0-9]*\\)[^@]*@" . font-lock-builtin-face)
+				("[A-Za-z0-9_$]+ *:" . font-lock-type-face)				
+				("sfunc" . font-lock-keyword-face)				
+				("for" . font-lock-keyword-face)
+				("while" . font-lock-keyword-face)
+				("mget" . font-lock-keyword-face)								
+				("if" . font-lock-keyword-face)
+				("arr" . font-lock-keyword-face)
+				("dic" . font-lock-keyword-face)
+				("call" . font-lock-keyword-face)
+				("return" . font-lock-keyword-face)
+				("break" . font-lock-keyword-face)
+				("continue" . font-lock-keyword-face)
+				("readFile" . font-lock-keyword-face)
+				("writeFile" . font-lock-keyword-face)
+				("readArgv" . font-lock-keyword-face)				
+				("\\$" . font-lock-keyword-face)				
+				("\\$ *\\([^ ]*\\)" . (1 font-lock-function-name-face))
+				("\\(\\@[A-Za-z_][A-Za-z0-9_]*\\)`" . (1 font-lock-variable-name-face))
+				("\\/\\/.*" . font-lock-comment-face)
+        ("\\/\\*[^\\*]*\\*\\/" . font-lock-comment-face)
+				)
 			)
+(defun test-font-lock-extend-region ()
+  "Extend the search region to include an entire block of text."
+  ;; Avoid compiler warnings about these global variables from font-lock.el.
+  ;; See the documentation for variable `font-lock-extend-region-functions'.
+  (eval-when-compile (defvar font-lock-beg) (defvar font-lock-end))
+  (save-excursion
+    (goto-char font-lock-beg)
+    (let ((found (or (re-search-backward "\n" nil t) (point-min))))
+      (goto-char font-lock-end)
+      (when (re-search-forward "\n" nil t)
+        (beginning-of-line)
+        (setq font-lock-end (point)))
+      (setq font-lock-beg found))))
+
 (define-derived-mode sl-mode fundamental-mode "Soul"
   "major mode for editing Soul language code."
   (setq font-lock-defaults '(sl-highlights))
   (setq indent-tabs-mode nil)
+  (set (make-local-variable 'font-lock-multiline) t)
+  (setq font-lock-keywords-only t) 
+	(add-hook 'font-lock-extend-region-functions
+            'test-font-lock-extend-region)	
 	)
+
 (add-to-list 'auto-mode-alist '("\\.sl$" . sl-mode))
 
 (defvar slt-highlights nil "highlight for Soul template language")
@@ -149,19 +184,6 @@
 				("~[^~]+~" . font-lock-comment-face)
 				("\\^[0-9A-Za-z_$]+" . font-lock-constant-face)
          ))
-(defun test-font-lock-extend-region ()
-  "Extend the search region to include an entire block of text."
-  ;; Avoid compiler warnings about these global variables from font-lock.el.
-  ;; See the documentation for variable `font-lock-extend-region-functions'.
-  (eval-when-compile (defvar font-lock-beg) (defvar font-lock-end))
-  (save-excursion
-    (goto-char font-lock-beg)
-    (let ((found (or (re-search-backward "\n\n" nil t) (point-min))))
-      (goto-char font-lock-end)
-      (when (re-search-forward "\n\n" nil t)
-        (beginning-of-line)
-        (setq font-lock-end (point)))
-      (setq font-lock-beg found))))
 (define-derived-mode slt-mode fundamental-mode "Soul template"
   "major mode for editing Soul template language code."
   (setq font-lock-defaults '(slt-highlights t))
