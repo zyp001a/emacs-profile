@@ -123,9 +123,6 @@
 				("`\\(\\\\.\\|[^\\\\`]\\)*`" . font-lock-warning-face)
 				("'\\(\\\\.\\|[^\\\\']\\)*'" . font-lock-string-face)
 				("\"\\(\\\\.\\|[^\\\\\"]\\)*\"" . font-lock-string-face)
-;;				("\\([A-Za-z0-9_$]+\\) *[-=]> *" . (1 font-lock-function-name-face))
-;;				("\\([A-Za-z0-9_$]+\\) *:= *" . (1 font-lock-function-name-face))
-;;				("[^&]\\& *\\([A-Za-z0-9_$ ]+\\)" . (1 font-lock-function-name-face))
         ("\\@\\([A-Za-z_][A-Za-z0-9]*\\)[^@]*@" . font-lock-builtin-face)
 				("[A-Za-z0-9_$]+ *:" . font-lock-type-face)				
 				("sfunc" . font-lock-keyword-face)				
@@ -202,3 +199,6 @@
 
 (add-hook 'after-save-hook 'my-after-save-actions)
 
+(add-to-list 'load-path "~/.emacs.d/rust-mode")
+(autoload 'rust-mode "rust-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
