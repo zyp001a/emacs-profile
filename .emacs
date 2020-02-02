@@ -1,4 +1,3 @@
-;;js2-mode
 ;;auto-complete
 ;;pyim
 ;;coffee-mode
@@ -64,11 +63,11 @@
 
 ;; select by mode
 (add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
-(add-to-list 'auto-mode-alist '("\\.json$" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.json$" . rjsx-mode))
 (add-to-list 'auto-mode-alist '("\\.js$" . rjsx-mode))
 (add-to-list 'auto-mode-alist '("\\.babel$" . rjsx-mode))
 (add-to-list 'auto-mode-alist '("\\.jsx$" . rjsx-mode))
-(add-to-list 'interpreter-mode-alist '("node" . js2-mode))
+(add-to-list 'interpreter-mode-alist '("node" . rjsx-mode))
 
 (defun replace-regexp-entire-buffer (pattern replacement)
   "Perform regular-expression replacement throughout buffer."
@@ -109,7 +108,7 @@
  '(js-indent-level 2)
  '(package-selected-packages
 	 (quote
-		(rjsx-mode popup auto-complete pyim js2-mode yasnippet php-mode json-mode json dired-details coffee-mode))))
+		(js2-mode rjsx-mode popup auto-complete pyim yasnippet php-mode json-mode json dired-details coffee-mode))))
 
 (eval-after-load "coffee-mode"
   '(progn
