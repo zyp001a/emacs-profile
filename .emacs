@@ -43,6 +43,7 @@
 (add-to-list 'load-path "~/.emacs.d/custom/go-mode.el")
 (autoload 'go-mode "go-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
+(add-to-list 'auto-mode-alist '("\\.pyx\\'" . python-mode))
 
 
 ;; pyim
